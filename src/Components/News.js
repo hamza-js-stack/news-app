@@ -11,12 +11,15 @@ export default class News extends Component {
   }
 
   async componentDidMount() {
-    let url =
-      'https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=7c8caccce5ec48c6b5458fa9c873d1f2';
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    console.log(parsedData);
-    this.setState({ articles: parsedData.articles });
+    try {
+      const url = 'https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=7c8caccce5ec48c6b5458fa9c873d1f2';
+      const data = await fetch(url);
+      const parsedData = await data.json();
+      this.setState({ articles: parsedData.articles || [] });
+    } catch (error) {
+      console.error('News API fetch error:', error);
+      this.setState({ articles: [] });
+    }
   }
 
   render() {
@@ -27,16 +30,9 @@ export default class News extends Component {
           {this.state.articles.map((element, index) => (
             <div className="col-md-4" key={index}>
               <NewsItem
-                title={element.title ? element.title.slice(0, 60) : ''}
-                description={
-                  element.description
-                    ? element.description.slice(0, 100)
-                    : ''
-                }
-                imageUrl={
-                  element.urlToImage ||
-                  'https://images.barrons.com/im-59009637/social'
-                }
+                title={element.title ? element.title.slice(0, 60) : 'No Title'}
+                description={element.description ? element.description.slice(0, 100) : 'No Description Available'}
+                imageUrl={element.urlToImage || 'https://images.barrons.com/im-59009637/social'}
                 newsUrl={element.url}
               />
             </div>
