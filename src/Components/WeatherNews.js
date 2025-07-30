@@ -11,15 +11,12 @@ export default class WeatherNews extends Component {
   }
 
   async componentDidMount() {
-    try {
-      const url = 'https://newsapi.org/v2/top-headlines?q=weather&language=en&pageSize=9&sortBy=publishedAt&apiKey=7c8caccce5ec48c6b5458fa9c873d1f2';
-      const data = await fetch(url);
-      const parsedData = await data.json();
-      this.setState({ articles: parsedData.articles || [] });
-    } catch (error) {
-      console.error('Weather API error:', error);
-      this.setState({ articles: [] });
-    }
+    const url =
+      'https://newsapi.org/v2/everything?q=weather%20OR%20climate&language=en&pageSize=9&sortBy=publishedAt&apiKey=7c8caccce5ec48c6b5458fa9c873d1f2';
+
+    const data = await fetch(url);
+    const parsedData = await data.json();
+    this.setState({ articles: parsedData.articles });
   }
 
   render() {
@@ -31,8 +28,16 @@ export default class WeatherNews extends Component {
             <div className="col-md-4 my-2" key={index}>
               <NewsItem
                 title={element.title ? element.title.slice(0, 60) : 'No Title'}
-                description={element.description ? element.description.slice(0, 100) : 'No Description Available'}
-                imageUrl={element.urlToImage || 'https://cdn.cnn.com/cnnnext/dam/assets/230729013927-weather-storm-clouds-stock-super-tease.jpg'}
+                description={
+                  element.description
+                    ? element.description.slice(0, 100)
+                    : 'No Description Available'
+                }
+                imageUrl={
+                  element.urlToImage
+                    ? element.urlToImage
+                    : 'https://cdn.cnn.com/cnnnext/dam/assets/230729013927-weather-storm-clouds-stock-super-tease.jpg'
+                }
                 newsUrl={element.url}
               />
             </div>

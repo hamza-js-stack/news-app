@@ -10,7 +10,6 @@ import WeatherNews from './Components/WeatherNews';
 export default class App extends Component {
   render() {
     return (
-      // ✅ Add the correct basename for GitHub Pages or Vercel subfolder deployment
       <Router basename="/news-app">
         <Navbar />
         <Routes>
